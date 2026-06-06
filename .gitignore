@@ -2,3 +2,4 @@
 .venv_new
 __pycache__
 venv
+model/trained_model_98.h5
