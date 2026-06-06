@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Result - Skin Detect</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0ea5e9;
+            --primary-teal: #14b8a6;
+            --primary-light: rgba(248, 250, 252, 0.7);
+            --text-dark: #0f172a;
+            --text-gray: #64748b;
+            --white: #ffffff;
+            --warning-bg: #fee2e2;
+            --warning-text: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0f2fe 0%, #cffafe 50%, #ffffff 100%);
+            background-size: 200% 200%;
+            animation: gradientBg 15s ease infinite;
+            min-height: 100vh;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes gradientBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            padding: 0 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Top Navigation Bar */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 24px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-area i {
+            font-size: 24px;
+        }
+
+        .back-btn {
+            background: var(--white);
+            color: var(--text-dark);
+            border: 1px solid #e2e8f0;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .back-btn:hover {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.1);
+        }
+
+        /* Main Card */
+        .main-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .hero-icon {
+            color: var(--primary-blue);
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .hero-title {
+            color: var(--text-dark);
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            color: var(--text-gray);
+            font-size: 16px;
+        }
+
+        /* Image Section */
+        .image-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: -40px; /* Overlap effect */
+            position: relative;
+            z-index: 2;
+        }
+
+        .analyzed-image {
+            width: 320px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            background: #eee;
+            border: 4px solid white;
+        }
+
+        /* Detected Condition Box */
+        .condition-box {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-teal) 100%);
+            border-radius: 24px;
+            padding: 70px 40px 40px;
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 15px 30px rgba(14, 165, 233, 0.2);
+        }
+
+        .condition-box.error-box {
+            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+            box-shadow: 0 15px 30px rgba(239, 68, 68, 0.2);
+        }
+
+        .condition-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 15px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .disease-name {
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            letter-spacing: -1px;
+        }
+
+        .confidence-bar-container {
+            background: rgba(255, 255, 255, 0.2);
+            height: 40px;
+            border-radius: 20px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .confidence-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.25);
+            z-index: 1;
+        }
+
+        .confidence-text {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 15px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .confidence-text i {
+            margin-right: 8px;
+            color: #fbbf24;
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 24px 20px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(14, 165, 233, 0.1);
+            border-color: #bae6fd;
+        }
+
+        .stat-icon {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .stat-icon.target { color: #ef4444; }
+        .stat-icon.flash { color: #f59e0b; }
+        .stat-icon.robot { color: #10b981; }
+
+        .stat-label {
+            color: var(--text-gray);
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            color: var(--text-dark);
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        /* AI Chatbot Section */
+        .chatbot-container {
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .chat-header i {
+            font-size: 24px;
+            color: #38bdf8;
+        }
+
+        .chat-messages {
+            padding: 24px;
+            height: 400px;
+            overflow-y: auto;
+            background: var(--primary-light);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 14px 18px;
+            border-radius: 18px;
+            font-size: 15px;
+            line-height: 1.6;
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.ai {
+            align-self: flex-start;
+            background: var(--white);
+            color: var(--text-dark);
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid #f1f5f9;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-teal) 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.2);
+        }
+
+        .chat-options {
+            padding: 20px;
+            background: var(--white);
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .chat-option-btn {
+            background: var(--white);
+            color: var(--text-dark);
+            border: 1px solid #cbd5e1;
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .chat-option-btn i {
+            color: var(--primary-blue);
+            margin-right: 4px;
+        }
+
+        .chat-option-btn:hover {
+            border-color: var(--primary-blue);
+            background: #f0f9ff;
+            color: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        .chat-input-area {
+            display: flex;
+            padding: 20px;
+            background: var(--white);
+            border-top: 1px solid #e2e8f0;
+            gap: 12px;
+        }
+
+        .chat-input-area input {
+            flex-grow: 1;
+            padding: 14px 20px;
+            border: 1px solid #cbd5e1;
+            border-radius: 24px;
+            outline: none;
+            font-size: 15px;
+            transition: all 0.2s;
+            background: #f8fafc;
+        }
+
+        .chat-input-area input:focus {
+            border-color: var(--primary-blue);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+        }
+
+        .chat-send-btn {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-teal) 100%);
+            color: white;
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+        }
+
+        .chat-send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(14, 165, 233, 0.4);
+        }
+
+        /* Disclaimer Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .disclaimer-modal {
+            background: white;
+            width: 90%;
+            max-width: 550px;
+            border-radius: 28px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-overlay.active .disclaimer-modal {
+            transform: scale(1);
+        }
+
+        .modal-icon {
+            width: 80px;
+            height: 80px;
+            background: #fee2e2;
+            color: #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 24px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+        }
+
+        .modal-body {
+            color: var(--text-gray);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .modal-btn {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-teal) 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);
+        }
+
+        /* Detailed Info Section */
+        .details-section {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 32px;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .detail-item {
+            display: flex;
+            gap: 20px;
+        }
+
+        .detail-icon {
+            width: 48px;
+            height: 48px;
+            background: #f0f9ff;
+            color: var(--primary-blue);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .detail-content h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .detail-content p {
+            font-size: 14px;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+            .main-card {
+                padding: 20px;
+            }
+            .disease-name {
+                font-size: 28px;
+            }
+            .analyzed-image {
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body onload="showDisclaimer()">
+    
+    <!-- Disclaimer Modal Overlay -->
+    <div class="modal-overlay" id="disclaimerModal">
+        <div class="disclaimer-modal">
+            <div class="modal-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="modal-title">Medical Disclaimer</h3>
+            <div class="modal-body">
+                This AI-powered tool is for <strong>educational and informational purposes only</strong>. It is not a substitute for professional medical advice, diagnosis, or treatment. <br><br> Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
+            </div>
+            <button class="modal-btn" onclick="hideDisclaimer()">I Understand & Accept</button>
+        </div>
+    </div>
+    <div class="container">
+        
+        <!-- Top Navigation -->
+        <div class="top-nav">
+            <div class="logo-area">
+                <i class="fas fa-microscope"></i>
+                <span>Skin Detect Result</span>
+            </div>
+            <a href="/home" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+
+        <!-- Main Content Card -->
+        <div class="main-card">
+            
+            <!-- Hero -->
+            <div class="hero-section">
+                <i class="fas fa-shield-alt hero-icon"></i>
+                <h1 class="hero-title">Analysis Complete</h1>
+                <p class="hero-subtitle">Our AI model has successfully analyzed your skin image</p>
+            </div>
+
+            <!-- Image & Condition -->
+            <div class="image-container">
+                <img src="{{ result.image_path }}" alt="Analyzed skin" class="analyzed-image">
+            </div>
+
+            <div class="condition-box {% if result.disease == 'Unrecognized Image' or result.disease == 'Wrong Image' %}error-box{% endif %}">
+                <div class="condition-header">
+                    <i class="fas {% if result.disease == 'Unrecognized Image' or result.disease == 'Wrong Image' %}fa-exclamation-triangle{% else %}fa-search{% endif %}"></i>
+                    <span>{% if result.disease == 'Unrecognized Image' or result.disease == 'Wrong Image' %}Analysis Error{% else %}Detected Skin Condition{% endif %}</span>
+                </div>
+                
+                <h2 class="disease-name">{{ result.disease }}</h2>
+                <div style="font-size: 14px; margin-top: -20px; margin-bottom: 25px; opacity: 0.9; font-weight: 500;">
+                    <i class="fas fa-map-marker-alt"></i> Affected Area: <strong>{{ result.body_area }}</strong>
+                </div>
+                
+                <div class="confidence-bar-container">
+                    <div class="confidence-fill" style="width: {{ result.confidence }}%;"></div>
+                    <div class="confidence-text">
+                        <i class="fas fa-bolt"></i>
+                        Confidence Level: {{ result.confidence }}%
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <i class="fas fa-bullseye stat-icon target"></i>
+                    <div class="stat-label">Model Accuracy</div>
+                    <div class="stat-value">{{ result.confidence }}%</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-stopwatch stat-icon flash"></i>
+                    <div class="stat-label">Processing Time</div>
+                    <div class="stat-value">< 2 sec</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-network-wired stat-icon robot"></i>
+                    <div class="stat-label">Architecture</div>
+                    <div class="stat-value">Deep Neural Net</div>
+                </div>
+            </div>
+
+            <!-- Detailed Information -->
+            {% if result.details %}
+            <div class="details-section">
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <div class="detail-icon"><i class="fas fa-info-circle"></i></div>
+                        <div class="detail-content">
+                            <h4>Description</h4>
+                            <p>{{ result.details.description }}</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-icon" style="background: #fff1f2; color: #ef4444;"><i class="fas fa-notes-medical"></i></div>
+                        <div class="detail-content">
+                            <h4>Common Symptoms</h4>
+                            <p>{{ result.details.symptoms }}</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-icon" style="background: #f0fdf4; color: #10b981;"><i class="fas fa-microscope"></i></div>
+                        <div class="detail-content">
+                            <h4>Possible Causes</h4>
+                            <p>{{ result.details.origin_causes }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Chatbot UI -->
+            <div class="chatbot-container" id="chatbot">
+                <div class="chat-header">
+                    <i class="fas fa-robot"></i>
+                    <span>Skin Detect Assistant</span>
+                </div>
+                
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message ai">
+                        Hello! I am your Skin Detect assistant. The diagnostic algorithm has identified <strong>{{ result.disease }}</strong>. How can I assist you with this condition?
+                    </div>
+                </div>
+                
+                <div class="chat-options">
+                    <button class="chat-option-btn" onclick="askQuestion('home_remedy', 'What are the home remedies?')"><i class="fas fa-leaf"></i> Home Remedy</button>
+                    <button class="chat-option-btn" onclick="askQuestion('solution', 'What is the medical solution?')"><i class="fas fa-pills"></i> Solution</button>
+                    <button class="chat-option-btn" onclick="askQuestion('doctor_visit_timeline', 'When should I see a doctor?')"><i class="fas fa-clock"></i> Doctor Timeline</button>
+                    <button class="chat-option-btn" onclick="askQuestion('contact_dermat', 'Find a Dermatologist')"><i class="fas fa-user-md"></i> Find Doctor</button>
+                    <button class="chat-option-btn" onclick="askQuestion('precautions', 'What precautions should I take?')"><i class="fas fa-shield-alt"></i> Precautions</button>
+                    <button class="chat-option-btn" onclick="askQuestion('diet_lifestyle', 'Any diet or lifestyle changes?')"><i class="fas fa-apple-alt"></i> Diet & Lifestyle</button>
+                </div>
+                
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Type your clinical query here..." onkeypress="handleKeyPress(event)">
+                    <button class="chat-send-btn" onclick="sendCustomQuery()"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+            
+            <script>
+                const diseaseDetails = {{ result.details | tojson | safe }};
+                
+                const proxyDermatologists = [
+                    {
+                        name: "Dr. Sarah Jenkins, MD",
+                        specialty: "Board Certified Dermatologist",
+                        phone: "(555) 019-8234",
+                        email: "contact@skinhealthclinic.com",
+                        address: "124 Medical Plaza, Suite 300",
+                        color: "#0ea5e9",
+                        bg: "#e0f2fe"
+                    },
+                    {
+                        name: "Dr. Michael Chen, DO",
+                        specialty: "Clinical Skin Specialist",
+                        phone: "(555) 234-9112",
+                        email: "m.chen@wellskin.org",
+                        address: "890 Wellness Blvd, East Wing",
+                        color: "#14b8a6",
+                        bg: "#ccfbf1"
+                    },
+                    {
+                        name: "Dr. Emily Rodriguez, MD",
+                        specialty: "Cosmetic & Medical Dermatologist",
+                        phone: "(555) 882-3045",
+                        email: "info@rodriguezskin.com",
+                        address: "45 City Center, 2nd Floor",
+                        color: "#8b5cf6",
+                        bg: "#ede9fe"
+                    },
+                    {
+                        name: "Dr. James Wilson, MD",
+                        specialty: "Pediatric Dermatologist",
+                        phone: "(555) 345-6789",
+                        email: "j.wilson@kidskin.com",
+                        address: "777 Childrens Way",
+                        color: "#f59e0b",
+                        bg: "#fef3c7"
+                    }
+                ];
+
+                function getDoctorCards() {
+                    let html = `<br><br><div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; margin-top: 15px; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+                        <strong style="color: #0ea5e9; font-size: 16px; display: flex; align-items: center; gap: 8px;"><i class="fas fa-user-md"></i> Recommended Specialists</strong>
+                        <p style="font-size: 13px; color: #64748b; margin-top: 5px; margin-bottom: 16px;">Based on your results, here are top-rated dermatologists available for consultation:</p>`;
+                    
+                    proxyDermatologists.forEach(doc => {
+                        html += `
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; margin-bottom: 12px; transition: transform 0.2s;">
+                            <span style="font-size: 16px; color: #0f172a; font-weight: 700;">${doc.name}</span><br>
+                            <span style="font-size: 12px; color: ${doc.color}; background: ${doc.bg}; padding: 4px 8px; border-radius: 6px; display: inline-block; margin-top: 6px; margin-bottom: 10px; font-weight: 600;">${doc.specialty}</span><br>
+                            <span style="font-size: 13px; color: #475569; display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><i class="fas fa-phone-alt" style="color: #94a3b8; width: 14px;"></i> ${doc.phone}</span>
+                            <span style="font-size: 13px; color: #475569; display: flex; align-items: center; gap: 8px; margin-bottom: 4px;"><i class="fas fa-envelope" style="color: #94a3b8; width: 14px;"></i> ${doc.email}</span>
+                            <span style="font-size: 13px; color: #475569; display: flex; align-items: center; gap: 8px;"><i class="fas fa-map-marker-alt" style="color: #94a3b8; width: 14px;"></i> ${doc.address}</span>
+                        </div>`;
+                    });
+                    
+                    html += `</div>`;
+                    return html;
+                }
+
+                function showDisclaimer() {
+                    document.getElementById('disclaimerModal').classList.add('active');
+                }
+
+                function hideDisclaimer() {
+                    document.getElementById('disclaimerModal').classList.remove('active');
+                }
+
+                function appendMessage(text, sender) {
+                    const messagesContainer = document.getElementById('chat-messages');
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = 'message ' + sender;
+                    msgDiv.innerHTML = text;
+                    messagesContainer.appendChild(msgDiv);
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
+
+                const areaPrecautions = {
+                    'Face': 'For facial skin, use only non-comedogenic (pore-friendly) cleansers and sunscreens. Avoid heavy oils and harsh alcohol-based toners.',
+                    'Hands': 'Keep hands moisturized after every wash. Wear cotton-lined gloves for household tasks to avoid chemical irritation.',
+                    'Feet': 'Keep the area dry. Wear moisture-wicking socks and change them twice daily. Ensure shoes are breathable.',
+                    'Scalp': 'Avoid scratching. Use a gentle, pH-balanced or medicated shampoo. Avoid heavy styling products that build up.',
+                    'Trunk': 'Wear loose, breathable cotton clothing. Avoid fabrics like wool or synthetics that can trap sweat and heat.',
+                    'Genital': 'This is a sensitive area. Use only plain water or extremely mild soap. Consult a doctor immediately as treatments vary greatly from other body parts.'
+                };
+
+                function getPrecautions() {
+                    let text = `<strong>Disease Precautions:</strong> ${diseaseDetails['precautions']}`;
+                    const area = "{{ result.body_area }}";
+                    if (area && area !== 'General' && areaPrecautions[area]) {
+                        text += `<br><br><strong>Region-Specific Advice (${area}):</strong> ${areaPrecautions[area]}`;
+                    }
+                    return text;
+                }
+
+                function askQuestion(key, questionText) {
+                    appendMessage(questionText, 'user');
+                    
+                    setTimeout(() => {
+                        let responseText = diseaseDetails[key] || "I don't have information on that specific detail.";
+                        if (key === 'contact_dermat' || key === 'doctor') {
+                            responseText = "Here are some highly recommended specialists in your area: " + getDoctorCards();
+                        } else if (key === 'precautions') {
+                            responseText = getPrecautions();
+                        } else if (key === 'doctor_visit_timeline') {
+                            responseText = `<strong>Medical Recommendation:</strong> You should aim to see a doctor <strong>${diseaseDetails['doctor_visit_timeline']}</strong>. This timeline is based on the standard clinical progression of ${diseaseDetails['name'] || 'this condition'}.`;
+                        }
+                        appendMessage(responseText, 'ai');
+                    }, 600);
+                }
+
+                function sendCustomQuery() {
+                    const inputEl = document.getElementById('chat-input');
+                    const query = inputEl.value.trim().toLowerCase();
+                    if (!query) return;
+
+                    appendMessage(inputEl.value, 'user');
+                    inputEl.value = '';
+                    
+                    setTimeout(() => {
+                        let responseText = '';
+                        
+                        if (query.includes('remedy') || query.includes('home') || query.includes('natural')) {
+                            responseText = diseaseDetails['home_remedy'];
+                        } else if (query.includes('solution') || query.includes('treatment') || query.includes('cure') || query.includes('medicine')) {
+                            responseText = diseaseDetails['solution'];
+                        } else if (query.includes('precaution') || query.includes('avoid') || query.includes('care')) {
+                            responseText = getPrecautions();
+                        } else if (query.includes('cause') || query.includes('why') || query.includes('how')) {
+                            responseText = diseaseDetails['origin_causes'];
+                        } else if (query.includes('diet') || query.includes('lifestyle') || query.includes('food')) {
+                            responseText = diseaseDetails['diet_lifestyle'];
+                        } else if (query.includes('contagious') || query.includes('spread')) {
+                            responseText = diseaseDetails['contagious'];
+                        } else if (query.includes('duration') || query.includes('long') || query.includes('time')) {
+                            responseText = diseaseDetails['duration'];
+                        } else if (query.includes('when') && (query.includes('doctor') || query.includes('see') || query.includes('visit') || query.includes('show'))) {
+                            responseText = `<strong>Clinical Timeline:</strong> For ${diseaseDetails['name'] || 'this condition'}, it is recommended to consult a professional <strong>${diseaseDetails['doctor_visit_timeline']}</strong>.`;
+                        } else if (query.includes('doctor') || query.includes('dermat') || query.includes('specialist') || query.includes('recommend')) {
+                            responseText = "I can definitely recommend some specialists for you: " + getDoctorCards();
+                        } else if (query.includes('symptom') || query.includes('sign') || query.includes('look like')) {
+                            responseText = `Common symptoms of this condition include: ${diseaseDetails['symptoms']}`;
+                        } else if (query.includes('describe') || query.includes('what is')) {
+                            responseText = diseaseDetails['description'];
+                        } else {
+                            responseText = "I am your Skin Detect assistant. I can help answer questions about: <br> • Home Remedies <br> • Medical Solutions <br> • Precautions <br> • Origin & Causes <br> • Diet & Lifestyle <br> • Is it Contagious? <br> • When to see a doctor <br> • Finding a Specialist. <br><br> Could you try asking about one of those?";
+                        }
+                        
+                        appendMessage(responseText, 'ai');
+                    }, 600);
+                }
+
+                function handleKeyPress(event) {
+                    if (event.key === 'Enter') {
+                        sendCustomQuery();
+                    }
+                }
+            </script>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

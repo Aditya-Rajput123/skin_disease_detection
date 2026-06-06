@@ -1,0 +1,95 @@
+Extracting model layers...
+Model: "sequential_1"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ conv2d_10 (Conv2D)          (None, 128, 128, 32)      896       
+                                                                 
+ conv2d_11 (Conv2D)          (None, 126, 126, 32)      9248      
+                                                                 
+ max_pooling2d_5 (MaxPooling  (None, 63, 63, 32)       0         
+ 2D)                                                             
+                                                                 
+ conv2d_12 (Conv2D)          (None, 63, 63, 64)        18496     
+                                                                 
+ conv2d_13 (Conv2D)          (None, 61, 61, 64)        36928     
+                                                                 
+ max_pooling2d_6 (MaxPooling  (None, 30, 30, 64)       0         
+ 2D)                                                             
+                                                                 
+ conv2d_14 (Conv2D)          (None, 30, 30, 128)       73856     
+                                                                 
+ conv2d_15 (Conv2D)          (None, 28, 28, 128)       147584    
+                                                                 
+ max_pooling2d_7 (MaxPooling  (None, 14, 14, 128)      0         
+ 2D)                                                             
+                                                                 
+ conv2d_16 (Conv2D)          (None, 14, 14, 256)       295168    
+                                                                 
+ conv2d_17 (Conv2D)          (None, 12, 12, 256)       590080    
+                                                                 
+ max_pooling2d_8 (MaxPooling  (None, 6, 6, 256)        0         
+ 2D)                                                             
+                                                                 
+ conv2d_18 (Conv2D)          (None, 6, 6, 512)         1180160   
+                                                                 
+ conv2d_19 (Conv2D)          (None, 4, 4, 512)         2359808   
+                                                                 
+ max_pooling2d_9 (MaxPooling  (None, 2, 2, 512)        0         
+ 2D)                                                             
+                                                                 
+ dropout_2 (Dropout)         (None, 2, 2, 512)         0         
+                                                                 
+ flatten_1 (Flatten)         (None, 2048)              0         
+                                                                 
+ dense_2 (Dense)             (None, 1500)              3073500   
+                                                                 
+ dropout_3 (Dropout)         (None, 1500)              0         
+                                                                 
+ dense_3 (Dense)             (None, 19)                28519     
+                                                                 
+=================================================================
+Total params: 7,814,243
+Trainable params: 7,814,243
+Non-trainable params: 0
+_________________________________________________________________
+Layer 0: conv2d_10 (Conv2D)
+  Config: {'name': 'conv2d_10', 'trainable': True, 'dtype': 'float32', 'filters': 32, 'kernel_size': (3, 3), 'strides': (1, 1), 'padding': 'same', 'data_format': 'channels_last', 'dilation_rate': (1, 1), 'groups': 1, 'activation': 'relu', 'use_bias': True, 'kernel_initializer': {'class_name': 'GlorotUniform', 'config': {'seed': None}}, 'bias_initializer': {'class_name': 'Zeros', 'config': {}}, 'kernel_regularizer': None, 'bias_regularizer': None, 'activity_regularizer': None, 'kernel_constraint': None, 'bias_constraint': None}
+Layer 1: conv2d_11 (Conv2D)
+  Config: {'name': 'conv2d_11', 'trainable': True, 'dtype': 'float32', 'filters': 32, 'kernel_size': (3, 3), 'strides': (1, 1), 'padding': 'valid', 'data_format': 'channels_last', 'dilation_rate': (1, 1), 'groups': 1, 'activation': 'relu', 'use_bias': True, 'kernel_initializer': {'class_name': 'GlorotUniform', 'config': {'seed': None}}, 'bias_initializer': {'class_name': 'Zeros', 'config': {}}, 'kernel_regularizer': None, 'bias_regularizer': None, 'activity_regularizer': None, 'kernel_constraint': None, 'bias_constraint': None}
+Layer 2: max_pooling2d_5 (MaxPooling2D)
+  Config: {'name': 'max_pooling2d_5', 'trainable': True, 'dtype': 'float32', 'pool_size': (2, 2), 'padding': 'valid', 'strides': (2, 2), 'data_format': 'channels_last'}
+Layer 3: conv2d_12 (Conv2D)
+  Config: {'name': 'conv2d_12', 'trainable': True, 'dtype': 'float32', 'filters': 64, 'kernel_size': (3, 3), 'strides': (1, 1), 'padding': 'same', 'data_format': 'channels_last', 'dilation_rate': (1, 1), 'groups': 1, 'activation': 'relu', 'use_bias': True, 'kernel_initializer': {'class_name': 'GlorotUniform', 'config': {'seed': None}}, 'bias_initializer': {'class_name': 'Zeros', 'config': {}}, 'kernel_regularizer': None, 'bias_regularizer': None, 'activity_regularizer': None, 'kernel_constraint': None, 'bias_constraint': None}
+Layer 4: conv2d_13 (Conv2D)
+  Config: {'name': 'conv2d_13', 'trainable': True, 'dtype': 'float32', 'filters': 64, 'kernel_size': (3, 3), 'strides': (1, 1), 'padding': 'valid', 'data_format': 'channels_last', 'dilation_rate': (1, 1), 'groups': 1, 'activation': 'relu', 'use_bias': True, 'kernel_initializer': {'class_name': 'GlorotUniform', 'config': {'seed': None}}, 'bias_initializer': {'class_name': 'Zeros', 'config': {}}, 'kernel_regularizer': None, 'bias_regularizer': None, 'activity_regularizer': None, 'kernel_constraint': None, 'bias_constraint': None}
+Layer 5: max_pooling2d_6 (MaxPooling2D)
+  Config: {'name': 'max_pooling2d_6', 'trainable': True, 'dtype': 'float32', 'pool_size': (2, 2), 'padding': 'valid', 'strides': (2, 2), 'data_format': 'channels_last'}
+Layer 6: conv2d_14 (Conv2D)
+  Config: {'name': 'conv2d_14', 'trainable': True, 'dtype': 'float32', 'filters': 128, 'kernel_size': (3, 3), 'strides': (1, 1), 'padding': 'same', 'data_format': 'channels_last', 'dilation_rate': (1, 1), 'groups': 1, 'activation': 'relu', 'use_bias': True, 'kernel_initializer': {'class_name': 'GlorotUniform', 'config': {'seed': None}}, 'bias_initializer': {'class_name': 'Zeros', 'config': {}}, 'kernel_regularizer': None, 'bias_regularizer': None, 'activity_regularizer': None, 'kernel_constraint': None, 'bias_constraint': None}
+Layer 7: conv2d_15 (Conv2D)
+  Config: {'name': 'conv2d_15', 'trainable': True, 'dtype': 'float32', 'filters': 128, 'kernel_size': (3, 3), 'strides': (1, 1), 'padding': 'valid', 'data_format': 'channels_last', 'dilation_rate': (1, 1), 'groups': 1, 'activation': 'relu', 'use_bias': True, 'kernel_initializer': {'class_name': 'GlorotUniform', 'config': {'seed': None}}, 'bias_initializer': {'class_name': 'Zeros', 'config': {}}, 'kernel_regularizer': None, 'bias_regularizer': None, 'activity_regularizer': None, 'kernel_constraint': None, 'bias_constraint': None}
+Layer 8: max_pooling2d_7 (MaxPooling2D)
+  Config: {'name': 'max_pooling2d_7', 'trainable': True, 'dtype': 'float32', 'pool_size': (2, 2), 'padding': 'valid', 'strides': (2, 2), 'data_format': 'channels_last'}
+Layer 9: conv2d_16 (Conv2D)
+  Config: {'name': 'conv2d_16', 'trainable': True, 'dtype': 'float32', 'filters': 256, 'kernel_size': (3, 3), 'strides': (1, 1), 'padding': 'same', 'data_format': 'channels_last', 'dilation_rate': (1, 1), 'groups': 1, 'activation': 'relu', 'use_bias': True, 'kernel_initializer': {'class_name': 'GlorotUniform', 'config': {'seed': None}}, 'bias_initializer': {'class_name': 'Zeros', 'config': {}}, 'kernel_regularizer': None, 'bias_regularizer': None, 'activity_regularizer': None, 'kernel_constraint': None, 'bias_constraint': None}
+Layer 10: conv2d_17 (Conv2D)
+  Config: {'name': 'conv2d_17', 'trainable': True, 'dtype': 'float32', 'filters': 256, 'kernel_size': (3, 3), 'strides': (1, 1), 'padding': 'valid', 'data_format': 'channels_last', 'dilation_rate': (1, 1), 'groups': 1, 'activation': 'relu', 'use_bias': True, 'kernel_initializer': {'class_name': 'GlorotUniform', 'config': {'seed': None}}, 'bias_initializer': {'class_name': 'Zeros', 'config': {}}, 'kernel_regularizer': None, 'bias_regularizer': None, 'activity_regularizer': None, 'kernel_constraint': None, 'bias_constraint': None}
+Layer 11: max_pooling2d_8 (MaxPooling2D)
+  Config: {'name': 'max_pooling2d_8', 'trainable': True, 'dtype': 'float32', 'pool_size': (2, 2), 'padding': 'valid', 'strides': (2, 2), 'data_format': 'channels_last'}
+Layer 12: conv2d_18 (Conv2D)
+  Config: {'name': 'conv2d_18', 'trainable': True, 'dtype': 'float32', 'filters': 512, 'kernel_size': (3, 3), 'strides': (1, 1), 'padding': 'same', 'data_format': 'channels_last', 'dilation_rate': (1, 1), 'groups': 1, 'activation': 'relu', 'use_bias': True, 'kernel_initializer': {'class_name': 'GlorotUniform', 'config': {'seed': None}}, 'bias_initializer': {'class_name': 'Zeros', 'config': {}}, 'kernel_regularizer': None, 'bias_regularizer': None, 'activity_regularizer': None, 'kernel_constraint': None, 'bias_constraint': None}
+Layer 13: conv2d_19 (Conv2D)
+  Config: {'name': 'conv2d_19', 'trainable': True, 'dtype': 'float32', 'filters': 512, 'kernel_size': (3, 3), 'strides': (1, 1), 'padding': 'valid', 'data_format': 'channels_last', 'dilation_rate': (1, 1), 'groups': 1, 'activation': 'relu', 'use_bias': True, 'kernel_initializer': {'class_name': 'GlorotUniform', 'config': {'seed': None}}, 'bias_initializer': {'class_name': 'Zeros', 'config': {}}, 'kernel_regularizer': None, 'bias_regularizer': None, 'activity_regularizer': None, 'kernel_constraint': None, 'bias_constraint': None}
+Layer 14: max_pooling2d_9 (MaxPooling2D)
+  Config: {'name': 'max_pooling2d_9', 'trainable': True, 'dtype': 'float32', 'pool_size': (2, 2), 'padding': 'valid', 'strides': (2, 2), 'data_format': 'channels_last'}
+Layer 15: dropout_2 (Dropout)
+  Config: {'name': 'dropout_2', 'trainable': True, 'dtype': 'float32', 'rate': 0.25, 'noise_shape': None, 'seed': None}
+Layer 16: flatten_1 (Flatten)
+  Config: {'name': 'flatten_1', 'trainable': True, 'dtype': 'float32', 'data_format': 'channels_last'}
+Layer 17: dense_2 (Dense)
+  Config: {'name': 'dense_2', 'trainable': True, 'dtype': 'float32', 'units': 1500, 'activation': 'relu', 'use_bias': True, 'kernel_initializer': {'class_name': 'GlorotUniform', 'config': {'seed': None}}, 'bias_initializer': {'class_name': 'Zeros', 'config': {}}, 'kernel_regularizer': None, 'bias_regularizer': None, 'activity_regularizer': None, 'kernel_constraint': None, 'bias_constraint': None}
+Layer 18: dropout_3 (Dropout)
+  Config: {'name': 'dropout_3', 'trainable': True, 'dtype': 'float32', 'rate': 0.4, 'noise_shape': None, 'seed': None}
+Layer 19: dense_3 (Dense)
+  Config: {'name': 'dense_3', 'trainable': True, 'dtype': 'float32', 'units': 19, 'activation': 'softmax', 'use_bias': True, 'kernel_initializer': {'class_name': 'GlorotUniform', 'config': {'seed': None}}, 'bias_initializer': {'class_name': 'Zeros', 'config': {}}, 'kernel_regularizer': None, 'bias_regularizer': None, 'activity_regularizer': None, 'kernel_constraint': None, 'bias_constraint': None}

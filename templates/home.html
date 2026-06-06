@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Detect - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0f2fe 0%, #cffafe 50%, #ffffff 100%);
+            background-size: 200% 200%;
+            animation: gradientBg 15s ease infinite;
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+
+        @keyframes gradientBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 20px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #0ea5e9;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .username {
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .welcome {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome h2 {
+            color: #0f172a;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .welcome p {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .upload-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .upload-box {
+            border: 2px dashed #94a3b8;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: rgba(248, 250, 252, 0.5);
+        }
+
+        .upload-box:hover {
+            background: rgba(224, 242, 254, 0.5);
+            border-color: #0ea5e9;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(14, 165, 233, 0.1);
+        }
+
+        .upload-box i {
+            font-size: 48px;
+            color: #0ea5e9;
+            margin-bottom: 20px;
+        }
+
+        .upload-box h3 {
+            color: #0f172a;
+            margin-bottom: 10px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .upload-box p {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.35);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #fileInput, #cameraInput {
+            display: none;
+        }
+
+        .area-selection {
+            margin: 25px 0;
+            text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .area-selection label {
+            display: block;
+            margin-bottom: 10px;
+            color: #1e293b;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .area-select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            color: #334155;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
+        }
+
+        .area-select:focus {
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+        }
+
+        .preview-section {
+            display: none;
+            margin-top: 30px;
+            text-align: center;
+            background: rgba(248, 250, 252, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .preview-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #imagePreview {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        #videoPreview {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .camera-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .history-section {
+            margin-top: 50px;
+        }
+
+        .history-section h3 {
+            color: #0f172a;
+            margin-bottom: 25px;
+            font-size: 24px;
+            font-weight: 700;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .history-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .history-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(14, 165, 233, 0.15);
+            border-color: #bae6fd;
+        }
+
+        .history-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .history-card h4 {
+            color: #0f172a;
+            margin-bottom: 5px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .history-card p {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f1f5f9;
+            border-top: 4px solid #0ea5e9;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        @media (max-width: 768px) {
+            .upload-section {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px;
+            }
+            .main-content {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔬 Skin Detect</h1>
+            <div class="user-info">
+                <span class="username">👤 {{ username }}</span>
+                <button class="logout-btn" onclick="window.location.href='/logout'">Logout</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="welcome">
+                <h2>Welcome Back!</h2>
+                <p>Upload or capture an image to perform an AI skin condition analysis</p>
+            </div>
+
+            <div class="upload-section">
+                <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+                    <div style="font-size: 48px; margin-bottom: 15px;">📁</div>
+                    <h3>Browse Images</h3>
+                    <p>Select a medical image from your device</p>
+                    <button class="btn" type="button">Choose File</button>
+                    <input type="file" id="fileInput" accept="image/*">
+                </div>
+
+                <div class="upload-box" onclick="startCamera()">
+                    <div style="font-size: 48px; margin-bottom: 15px;">📷</div>
+                    <h3>Capture Image</h3>
+                    <p>Use your camera to take a clear photo</p>
+                    <button class="btn" type="button">Open Camera</button>
+                </div>
+            </div>
+
+            <div class="preview-section" id="imagePreviewSection">
+                <h3 style="margin-bottom: 20px; color: #0f172a;">Analysis Setup</h3>
+                <img id="imagePreview" alt="Preview">
+                
+                <div class="area-selection">
+                    <label for="bodyArea">Which part of the body is affected?</label>
+                    <select id="bodyArea" class="area-select">
+                        <option value="General">Select Body Area (Optional)</option>
+                        <option value="Face">Face</option>
+                        <option value="Hands">Hands</option>
+                        <option value="Feet">Feet</option>
+                        <option value="Trunk">Trunk / Body</option>
+                        <option value="Scalp">Scalp</option>
+                        <option value="Genital">Sensitive Area</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button class="btn" onclick="analyzeImage()">Analyze Image</button>
+                    <button class="btn" style="background: #94a3b8; margin-left: 10px; box-shadow: none;" onclick="clearPreview()">Cancel</button>
+                </div>
+            </div>
+
+            <div class="preview-section" id="cameraPreviewSection">
+                <h3 style="margin-bottom: 20px; color: #0f172a;">Camera Preview</h3>
+                <video id="videoPreview" autoplay></video>
+                <canvas id="canvas" style="display: none;"></canvas>
+                <div class="camera-controls">
+                    <button class="btn" onclick="capturePhoto()">📸 Capture Photo</button>
+                    <button class="btn" style="background: #94a3b8; box-shadow: none;" onclick="stopCamera()">Cancel</button>
+                </div>
+            </div>
+
+            <div class="loading" id="loadingSection">
+                <div class="spinner"></div>
+                <p style="color: #64748b; font-weight: 500;">Running AI diagnostics...</p>
+            </div>
+
+            <div class="history-section">
+                <h3>Recent Analysis</h3>
+                <div class="history-grid" id="historyGrid">
+                    <p style="color: #94a3b8;">No previous analysis found</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let stream = null;
+        let capturedImageData = null;
+
+        // File input handler
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').src = e.target.result;
+                    document.getElementById('imagePreviewSection').classList.add('active');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Camera functions
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const video = document.getElementById('videoPreview');
+                video.srcObject = stream;
+                document.getElementById('cameraPreviewSection').classList.add('active');
+            } catch (err) {
+                alert('Unable to access camera: ' + err.message);
+            }
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById('videoPreview');
+            const canvas = document.getElementById('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0);
+            
+            capturedImageData = canvas.toDataURL('image/png');
+            document.getElementById('imagePreview').src = capturedImageData;
+            
+            stopCamera();
+            document.getElementById('imagePreviewSection').classList.add('active');
+        }
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            document.getElementById('cameraPreviewSection').classList.remove('active');
+        }
+
+        function clearPreview() {
+            document.getElementById('imagePreviewSection').classList.remove('active');
+            document.getElementById('imagePreview').src = '';
+            document.getElementById('fileInput').value = '';
+            capturedImageData = null;
+        }
+
+        async function analyzeImage() {
+            const formData = new FormData();
+            
+            if (capturedImageData) {
+                formData.append('image_data', capturedImageData);
+            } else {
+                const fileInput = document.getElementById('fileInput');
+                if (fileInput.files.length === 0) {
+                    alert('Please select an image first');
+                    return;
+                }
+                formData.append('file', fileInput.files[0]);
+            }
+
+            const bodyArea = document.getElementById('bodyArea').value;
+            formData.append('body_area', bodyArea);
+
+            document.getElementById('loadingSection').classList.add('active');
+            document.getElementById('imagePreviewSection').classList.remove('active');
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    window.location.href = `/result/${result.prediction_id}`;
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (error) {
+                alert('Error analyzing image: ' + error.message);
+            } finally {
+                document.getElementById('loadingSection').classList.remove('active');
+            }
+        }
+
+        // Load history
+        async function loadHistory() {
+            try {
+                const response = await fetch('/history');
+                const history = await response.json();
+                
+                const historyGrid = document.getElementById('historyGrid');
+                
+                if (history.length === 0) {
+                    historyGrid.innerHTML = '<p style="color: #94a3b8;">No previous analysis found</p>';
+                    return;
+                }
+
+                historyGrid.innerHTML = history.map(item => `
+                    <div class="history-card" onclick="window.location.href='/result/${item.id}'">
+                        <img src="/${item.image_path}" alt="${item.disease}">
+                        <h4>${item.disease}</h4>
+                        <p style="color: #0ea5e9; font-weight: 500;">Confidence: ${item.confidence}%</p>
+                        <p style="font-size: 12px; color: #94a3b8; margin-top: 8px;">${new Date(item.created_at).toLocaleDateString()}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading history:', error);
+            }
+        }
+
+        // Load history on page load
+        loadHistory();
+    </script>
+</body>
+</html>

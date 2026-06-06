@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Skin Detect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0f2fe 0%, #cffafe 50%, #ffffff 100%);
+            background-size: 200% 200%;
+            animation: gradientBg 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Abstract shapes */
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+        }
+        .shape-1 { width: 400px; height: 400px; background: rgba(14, 165, 233, 0.2); top: -100px; left: -100px; }
+        .shape-2 { width: 500px; height: 500px; background: rgba(20, 184, 166, 0.2); bottom: -150px; right: -150px; }
+
+        .signup-container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 1000px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            z-index: 1;
+        }
+
+        .left-section {
+            background: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 100%);
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.5;
+        }
+
+        .left-section h1 {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: -0.5px;
+            z-index: 1;
+        }
+
+        .left-section p {
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            z-index: 1;
+        }
+
+        .benefit-list {
+            list-style: none;
+            width: 100%;
+            max-width: 300px;
+            z-index: 1;
+        }
+
+        .benefit-list li {
+            padding: 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .benefit-list li:last-child {
+            border-bottom: none;
+        }
+
+        .benefit-list li:before {
+            content: "✓";
+            background: rgba(255,255,255,0.2);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .right-section {
+            padding: 60px 50px;
+            background: transparent;
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+        }
+
+        .form-header h2 {
+            color: #0f172a;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .form-header p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #334155;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 18px;
+            transition: color 0.2s;
+        }
+
+        .toggle-password:hover {
+            color: #64748b;
+        }
+
+        .password-strength {
+            margin-top: 6px;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+        }
+
+        .strength-weak { background: #ef4444; width: 33%; }
+        .strength-medium { background: #f59e0b; width: 66%; }
+        .strength-strong { background: #10b981; width: 100%; }
+
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 24px;
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .terms-checkbox input {
+            margin-top: 3px;
+            accent-color: #0ea5e9;
+            width: 16px;
+            height: 16px;
+        }
+
+        .terms-checkbox a {
+            color: #0ea5e9;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(14, 165, 233, 0.25);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.35);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 24px 0;
+            color: #94a3b8;
+            font-size: 14px;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .divider:before,
+        .divider:after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 42%;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .divider:before { left: 0; }
+        .divider:after { right: 0; }
+
+        .login-link {
+            text-align: center;
+            color: #475569;
+            font-size: 15px;
+        }
+
+        .login-link a {
+            color: #0ea5e9;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .login-link a:hover {
+            color: #0284c7;
+        }
+
+        .alert {
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .input-error {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 900px) {
+            .signup-container {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+            .left-section {
+                display: none;
+            }
+            .right-section {
+                padding: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+
+    <div class="signup-container">
+        <div class="left-section">
+            <div style="font-size: 72px; margin-bottom: 20px; z-index: 1;">🏥</div>
+            <h1>Join Skin Detect</h1>
+            <p>Create your account and start detecting skin conditions with our advanced AI technology.</p>
+            <ul class="benefit-list">
+                <li>Fast & Accurate Analysis</li>
+                <li>Secure Data Storage</li>
+                <li>Personalized Recommendations</li>
+                <li>Track Your Health Journey</li>
+            </ul>
+        </div>
+
+        <div class="right-section">
+            <div class="form-header">
+                <h2>Create Account</h2>
+                <p>Register to get started</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="/signup" id="signupForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Choose a username" required minlength="3">
+                    <div class="error-message" id="usernameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <div class="error-message" id="emailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" placeholder="Create a strong password" required minlength="6">
+                        <span class="toggle-password" onclick="togglePassword('password')">👁️</span>
+                    </div>
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="strengthBar"></div>
+                    </div>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Re-enter your password" required>
+                        <span class="toggle-password" onclick="togglePassword('confirm_password')">👁️</span>
+                    </div>
+                    <div class="error-message" id="confirmError"></div>
+                </div>
+
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Create Account</button>
+
+                <div class="divider">OR</div>
+
+                <div class="login-link">
+                    Already have an account? <a href="/login">Login here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('signupForm');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirm_password');
+        const username = document.getElementById('username');
+        const email = document.getElementById('email');
+
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const icon = field.nextElementSibling;
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.textContent = '🙈';
+            } else {
+                field.type = 'password';
+                icon.textContent = '👁️';
+            }
+        }
+
+        password.addEventListener('input', function() {
+            const strength = calculatePasswordStrength(this.value);
+            const strengthBar = document.getElementById('strengthBar');
+            
+            strengthBar.className = 'password-strength-bar';
+            if (strength < 40) {
+                strengthBar.classList.add('strength-weak');
+            } else if (strength < 80) {
+                strengthBar.classList.add('strength-medium');
+            } else {
+                strengthBar.classList.add('strength-strong');
+            }
+        });
+
+        function calculatePasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 6) strength += 20;
+            if (password.length >= 10) strength += 20;
+            if (/[a-z]/.test(password)) strength += 20;
+            if (/[A-Z]/.test(password)) strength += 20;
+            if (/[0-9]/.test(password)) strength += 10;
+            if (/[^a-zA-Z0-9]/.test(password)) strength += 10;
+            return strength;
+        }
+
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            document.querySelectorAll('input').forEach(el => el.classList.remove('input-error'));
+
+            // Username validation
+            if (username.value.length < 3) {
+                document.getElementById('usernameError').textContent = 'Username must be at least 3 characters';
+                username.classList.add('input-error');
+                isValid = false;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email';
+                email.classList.add('input-error');
+                isValid = false;
+            }
+
+            // Password validation
+            if (password.value.length < 6) {
+                document.getElementById('passwordError').textContent = 'Password must be at least 6 characters';
+                password.classList.add('input-error');
+                isValid = false;
+            }
+
+            // Confirm password validation
+            if (password.value !== confirmPassword.value) {
+                document.getElementById('confirmError').textContent = 'Passwords do not match';
+                confirmPassword.classList.add('input-error');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
